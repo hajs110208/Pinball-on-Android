@@ -1,11 +1,14 @@
 #pragma once
 
+#include <cstdint>
+
 struct high_score_struct
 {
 	char Name[32];
 	int Score;
+	unsigned int Timestamp;
+	unsigned int ScoreHash;
 };
-
 
 class high_score
 {
@@ -19,7 +22,10 @@ public:
 	static void show_high_score_dialog(high_score_struct* table);
 	static void show_and_set_high_score_dialog(high_score_struct* table, int score, int pos, LPCSTR defaultName);
 	static void RenderHighScoreDialog();
-private :
+	static unsigned int compute_score_hash(const high_score_struct* entry);
+	static bool validate_score(const high_score_struct* entry);
+private:
+	static const unsigned int HASH_SEED = 0x9E3779B9u;
 	static int dlg_enter_name;
 	static int dlg_score;
 	static int dlg_position;
